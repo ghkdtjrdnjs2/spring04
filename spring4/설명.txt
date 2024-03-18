@@ -1,0 +1,83 @@
+1. JDBC - 자바 데이터베이스 프로그래밍 표준 -> 인터페이스
+			  - 자바와 연동되고 싶은 db 제조사는 jdbc 표준을 구현해라
+			  
+2. driver - db 제조사가 JDBC표준을 구현한 프로그램
+
+3. Connection - 데이터베이스와 연결하는 객체
+							- 필요할 때 연결하고 사용이 끝나면 해제할 경우 비용이 크다
+
+4. Connection [Pool]
+	- Connection을 미리 여러개 만들어 놓고 빌려서 사용 후 반납
+	- 대중적인 제품으로는 DBCP
+	- 스프링의 기본 커넥션풀은 Hikari CP
+
+5. 스프링부트는 라이브러리를 자동 설정
+  - 프로젝트 만들 때 드라이버를 선택하면 자동으로 Hikari 설정을 잡는다
+  - 드라이버이름, 서버 url, 아이디, 비밀번호
+
+6. Connection은 사용이 끝나면 연결을 끊는다
+   그런데 CP는 사용이 끝나면 연결을 끊는 것이 아니라 반납하는 객체가 필요하다
+   - jdbc가 사용하는 연결 객체 : Connection
+   - CP가 사용하는 연결 객체 : Connection이 아니라 DataSource를 사용
+
+7. Connection Pool은 DataSouce를 미리 생성한 다음 빌려주고 반납받으면서 운용
+   
+8. application.properties 설정
+	- 드라이버 이름, 서버 url, username, password
+
+9. mybatis로 작업하면 실행되는 sql이 출력 X -> 찍기 위한 설정 
+   sql을 출력하는 라이브러리가 필요 -> log4jdbc-log4j2
+
+10. 시스템의 상태를 출력하는 것을 logging이라고 한다
+	- 디자인 패턴 facade 패턴 : 표준이 있고 구현체가 있다
+  - 자바 로깅 표준 : slf4j 인터페이스
+  - 자바 로깅 구현체 : log4j, log4j2, logback...
+
+11. logback에 대한 설정파일의 logback.xml
+	- 로깅레벨 : error > warn > info > debug > trace
+	- 예를 들어 400오류의 경우
+			레벨이 info면 아무 내용도 안나온다
+			레벨을 debug로 하면 어떤 값이 들어와서 거부했다는 내용이 콘솔에 나온다
+			
+12. 데이터를 이름과 값으로 저장
+	- 클래스
+	- Map
+	- properties : username=spring 이런 텍스트 파일 형셕
+
+13. component-scan
+	- 처리하는 객체는 스프링이 생성 -> 스프링 bean
+	- 스프링이 @Component가 걸린 클래스를 검색하는데...
+			프로젝트 패키지(com.example.demo)의 하위 패키지
+			
+14. 스프링빈을 만드는 어노테이션
+	- @Component <- @Controller, @Service, @Repository(dao)
+	- 유명한 라이브러리를 사용하면 스프링이 그 라이브러리를 지원
+			JUnit : @SpringBootTest
+	- 2군급 라이브러리는 스프링 지원X -> 라이브러리가 스프링을 지원한다			
+			마이바티스가 객체를 생성해서 스프링에 등록 : @Mapper
+			
+
+13. 클래스의 이름이 겹치면
+	- 스프링 빈은 싱글톤(객체가 1개만 만들어진다)
+	- 그런데 보통 객체를 하나 만들때 객체 이름은 클래스 이름을 소문자로...
+		DeptDao deptDao = new DeptDao();
+	- 스프링이 @Component로 객체를 생성할 때
+			생성한 객체의 이름은 클래스 이름과 같다
+			
+14. 몰라도 돼
+	- @Autowired는 type으로 주입
+		@Autowired
+		private Tire tire;
+	- 위 코드를 주입할 때 Tire 객체가 둘 이상이면 오류 발생
+	- 2차적으로 이름으로 객체를 구별해서 주입할 수 있다 : @Qualifier
+	  따라서 객체의 이름은 겹쳐서는 안된다
+
+
+
+
+
+
+
+
+
+

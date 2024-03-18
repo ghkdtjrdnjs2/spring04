@@ -1,0 +1,29 @@
+emp, dept 관리
+※ 컨트롤러 기능
+- 사원목록 : 루트 페이지
+	service에서 List<Emp>을 리턴(list)
+		empDao.findAll()
+- 로그인(/member/login)
+	HttpSession에 아이디를 저장 -> controller에서 작업
+- 로그아웃(/member/logout)
+	HttpSession을 invalidate -> controller에서 작업
+- 사원정보(/emp/read) - 입력(empno)
+	service에서 Emp를 리턴(read)
+		empDao.findByEmpno(Long empno)
+- 부서정보(/dept/read) : 부서, 부서원 정보 - 입력(deptno)
+	service에서 Dept, List<Emp>를 리턴(read) -> Map
+		deptDao.findByDeptno(Long deptno)
+		empDao.findByDeptno(Long deptno)
+- 사원추가(/emp/add) 화면 보여주기
+	이름, job, 입사일, 관리자, 급여, 부서번호를 입력(add)
+	화면에 job목록, 관리자 목록, 부서번호 목록을 출력
+		empDao.findJobs()
+		empDao.findMgrs()
+		mepDao.findDeptnos()
+- 사원추가(/emp/add) 처리
+	입력 데이터에 사번을 추가해서 저장(comm은 null)
+	사번은 기본사번의 최대값 + 1
+		empDao.max();
+		empDao.save();
+
+
